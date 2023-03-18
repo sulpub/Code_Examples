@@ -25,3 +25,27 @@ void loop() {
   // Votre code ici
 }
 ```
+
+## Test presence chaine de caractére
+```
+void setup() {
+  Serial.begin(9600);
+  
+  // Chaîne de caractères reçue
+  String receivedString = "test toto";
+  
+  // Sous-chaîne à rechercher
+  String searchString = "toto";
+  
+  // Vérifier si la sous-chaîne est présente dans la chaîne de caractères
+  if (receivedString.indexOf(searchString) >= 0) {
+    Serial.println("La sous-chaîne est présente dans la chaîne de caractères !");
+  } else {
+    Serial.println("La sous-chaîne n'est pas présente dans la chaîne de caractères.");
+  }
+}
+
+void loop() {
+  // Votre code ici
+}
+```
