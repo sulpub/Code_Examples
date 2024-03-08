@@ -106,3 +106,70 @@ Serial.print(':');
 Serial.print(now.second(), DEC);
 Serial.println();
 ```
+
+
+## Code exemple monté en puissance moteur un seul fil
+
+Ce code permet un demarrage en rampup d'une moteur sur l'alimentation d'un moteur DC.
+Note : il faut un étage de puissance pour alimenter le moteur.
+
+```
+const int pwmPin = 9; // Broche PWM pour le contrôle du moteur
+const int rampDelay = 10; // Durée entre chaque augmentation de puissance (en millisecondes)
+const int maxPower = 255; // Puissance maximale du moteur
+
+void setup() {
+  // Initialisation de la broche PWM en sortie
+  pinMode(pwmPin, OUTPUT);
+}
+
+void loop() {
+  // Fading progressif de 0 à maxPower
+  for (int power = 0; power <= maxPower; power++) {
+    analogWrite(pwmPin, power); // Réglage de la puissance du moteur
+    delay(rampDelay); // Attente pour le fading progressif
+  }
+  // Fading progressif de maxPower à 0
+  for (int power = maxPower; power >= 0; power--) {
+    analogWrite(pwmPin, power); // Réglage de la puissance du moteur
+    delay(rampDelay); // Attente pour le fading progressif
+  }
+}
+```
+
+
+## Code exemple monté en puissance moteur pas à pas
+
+Ce code permet un demarrage en rampup d'une moteur pas à pas sous arduino.
+
+```
+#include <Stepper.h>
+
+const int stepsPerRevolution = 200; // Nombre de pas par révolution pour votre moteur
+const int rampDelay = 10; // Durée entre chaque augmentation de puissance (en millisecondes)
+
+// Initialisez le stepper avec les broches appropriées
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
+
+void setup() {
+  // Rien à faire dans la configuration
+}
+
+void loop() {
+  // Démarrage du fading progressif
+  for (int power = 0; power <= 255; power++) {
+    myStepper.setSpeed(power); // Réglez la vitesse du moteur pas à pas
+    myStepper.step(1); // Faites avancer le moteur d'un pas
+    delay(rampDelay); // Attente pour le fading progressif
+  }
+
+  // Inversion de la direction du fading progressif
+  for (int power = 255; power >= 0; power--) {
+    myStepper.setSpeed(power); // Réglez la vitesse du moteur pas à pas
+    myStepper.step(-1); // Faites reculer le moteur d'un pas
+    delay(rampDelay); // Attente pour le fading progressif
+  }
+}
+
+
+```
